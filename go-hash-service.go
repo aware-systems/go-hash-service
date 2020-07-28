@@ -161,7 +161,7 @@ func main() {
 	fmt.Println("Listening on", fmt.Sprintf("%s:%d", *listenAddr, *listenPort))
 	go func() {
 		if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			fmt.Printf("Could not listen on %s: %v\n", listenAddr, err)
+			fmt.Printf("Could not listen on %s: %v\n", *listenAddr, err)
 		}
 	}()
 
@@ -187,7 +187,6 @@ func gracefulShutdown() {
 	if err := httpServer.Shutdown(ctx); err != nil {
 		fmt.Println(err)
 	}
-
 }
 
 // hash a given string and return Base64 encoded SHA512 hash
