@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"runtime"
 	"strconv"
 	"sync"
 	"time"
@@ -133,11 +134,17 @@ func main() {
 
 	// shutdown - graceful exit
 	httpRouter.HandleFunc("/shutdown", func(w http.ResponseWriter, req *http.Request) {
+		// TODO BUG: Windows cannot handle graceful shutdown, find a better way
+		process, _ := os.FindProcess(os.Getpid())
 		responseWrapper(w, "text/plain", "Goodbye!", http.StatusOK)
 
-		// SERIOUS BUG: This does not work with Windows
-		process, _ := os.FindProcess(os.Getpid())
-		process.Signal(os.Interrupt)
+		expungeConnection(w) // necessary because windows
+
+		if runtime.GOOS == "windows" {
+			process.Signal(os.Kill)
+		} else {
+			process.Signal(os.Interrupt)
+		}
 	})
 
 	done := make(chan bool, 1)
