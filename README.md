@@ -3,10 +3,17 @@ Password hashing service
 
 This project is the result of a test project for Jumpcloud.
 
-## Synopse
-A simple hashing service.  To be run on the command line like this:
+## Summary:
+A simple hashing REST service.  You can compile and run the service
+through typical go means:
 
-go run go-hash-service.go --port 8080 --address localhost
+```
+$ go run go-hash-service.go --port 8080 --address localhost
+```
+
+Port and address are optional command line arguments.  Service will run
+in the foreground of your terminal until either Ctrl-C or the shutdown
+request is received.
 
 ### hash
 Accepts POST to /hash URI, expects password form-encoded parameter.
@@ -24,7 +31,9 @@ the average response time for inital POST request.
 Accepts any request to /shutdown to gracefully terminate the server.
 NOTE: Windows is less than graceful.
 
-## Usage
-Accepts two parameters:
-* port - Which port to listen on (default 8080)
-* address - Which host to listen on (default localhost)
+## Misc.
+This software is distributed under the MIT license.  See the accompanying
+LICENSE file for more information.
+
+Created July 2020 by Adam Erickson, adam@awre.co
+
